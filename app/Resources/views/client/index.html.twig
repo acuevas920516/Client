@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Clients list</h1>
+
+    <table class="table table-bordered" id="clientsTable">
+        <col width="200">
+        <col width="150">
+        <col width="100">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if(clients|length < 1) %}
+            <tr>
+                <td colspan="6" id="nullTable" class="text-center">No se encontraron elementos.</td>
+            </tr>
+        {% endif %}
+        {% for client in clients %}
+            <tr id="tr{{ client.id }}">
+                <td>{{ client.name }}</td>
+                <td>{{ client.email }}</td>
+                <td>{{ client.phone }}</td>
+                <td>{{ client.address }}</td>
+                <td>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a class="btn btn-success" onclick="showClient({{ client.id }})"
+                               style="float: left; margin-right: 2px"><i
+                                        class="fa fa-eye"></i></a>
+                        </li>
+                        <li>
+                            <a class="btn btn-warning"
+                               onclick="editClient({{ client.id }})"
+                               style="float: left; margin-right: 2px"><i
+                                        class="fa fa-pencil"></i></a>
+                        </li>
+                        <li>
+                            <a class="btn btn-danger"
+                               id="btnDeleteTable"
+                               onclick="delElement({{ client.id }})"
+                               style="float: left; margin-right: 2px"><i
+                                        class="fa fa-trash"></i></a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="showuser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Mostrar Cliente</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row text-center" id="contentUser">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Cerrar</a>
+                    <a class="btn btn-danger" id="btnDelete">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="createUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Crear Cliente</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row text-center">
+                        <form action="#" name="createUser">
+                            <div class="col-md-12 form-group">
+                                <label for="name">Nombre y Apellidos</label>
+                                <input class="form-control" type="text" required name="name" id="formName" placeholder="Nombre y  apellidos">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label for="email">Email</label>
+                                <input class="form-control" type="email" required name="email" id="formEmail" placeholder="Email">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label for="phone">Teléfono</label>
+                                <input class="form-control" type="number" required name="phone" id="formPhone" placeholder="Teléfono">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label for="address">Dirección</label>
+                                <input class="form-control" type="text" required name="address" id="formAddress" placeholder="Dirección">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form name="createUser">
+                        <input type="submit" class="btn btn-primary" value="Guardar">
+                        <a class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Cerrar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <a class="btn btn-primary" id="openModalCreate">Create a new client</a>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('bundles/client/js/main.js') }}"></script>
+{% endblock %}
